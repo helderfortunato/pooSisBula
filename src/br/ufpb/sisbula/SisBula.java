@@ -27,7 +27,7 @@ public interface SisBula {
 	 * @return a lista dos medicamentos para o sintoma
 	 * ou doença pesquisado
 	 */
-	public List<Medicamento> pesquisaMedicamentosPara(IndicacaoMedicamento ind);
+	public List<Medicamento> pesquisaMedicamentosPara(String nome);
 	public Map<String, Medicamento> getMedicamentos();
 	public Medicamento pesquisaMedicamento(String nome, Fabricante fabricante) throws MedicamentoInexistenteException;
 
@@ -49,9 +49,11 @@ public interface SisBula {
 
 	public abstract boolean removerDoenca(Doenca d);
 
-	public abstract boolean cadastrarSintoma(Sintoma s);
+	public abstract boolean cadastrarSintoma(String s);
 
-	public abstract boolean cadastrarDoenca(Doenca d);
+	public abstract boolean cadastrarDoenca(String d);
 
 	public abstract void removerMedi(String nomeMedi);
+
+	List<Medicamento> pesquisaMedicamentosDoFabricante(Fabricante fab);
 }

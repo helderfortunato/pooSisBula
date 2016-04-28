@@ -22,6 +22,10 @@ public class GerenteMedi {
 			this.medicamentos = new HashMap<String,Medicamento>();
 		}
 	}
+	public void cadastrarMedi(String nome) throws MedicamentoJaExisteException{
+		Medicamento medi = new Medicamento(nome);
+		this.cadastraMedicamento(medi);
+	}
 	
 	public void cadastraMedicamento(Medicamento m) throws MedicamentoJaExisteException {
 		Medicamento med = this.medicamentos.get(m.getId());

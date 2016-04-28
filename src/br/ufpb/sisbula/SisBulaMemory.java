@@ -48,6 +48,7 @@ public class SisBulaMemory implements SisBula {
 	public Medicamento pesquisaMedicamento(String nome, Fabricante fabricante) throws MedicamentoInexistenteException {
 		return gMedi.pesquisaMedicamento(nome, fabricante);
 	}
+	@Override
 	/**
 	 * Pesquisa todos o medicamentos de determinado fabricante
 	 * @param fab fabricante a ser pesquisado
@@ -63,8 +64,8 @@ public class SisBulaMemory implements SisBula {
 	 * @param uma indicacaoMedicamento podendo ser :sintoma ou doençaa
 	 * @return a lista dos medicamentos para o sintoma ou doença pesquisado
 	 */
-	public List<Medicamento> pesquisaMedicamentosPara(IndicacaoMedicamento ind) {
-		return gMedi.pesquisaMedicamentosPara(ind);
+	public List<Medicamento> pesquisaMedicamentosPara(String nome) {
+		return gMedi.pesquisaMedicamentosPara(gDS.pesquisaDS(nome));
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class SisBulaMemory implements SisBula {
 	 * @return um boolean
 	 */
 	@Override
-	public boolean cadastrarDoenca(Doenca d){
+	public boolean cadastrarDoenca(String d){
 		return gDS.cadastrarDoenca(d);
 	}
 	/**
@@ -98,7 +99,7 @@ public class SisBulaMemory implements SisBula {
 	 * @return um boolean
 	 */
 	@Override
-	public boolean cadastrarSintoma(Sintoma s){
+	public boolean cadastrarSintoma(String s){
 		return gDS.cadastrarSintoma(s);
 	}
 	/**
@@ -185,5 +186,22 @@ public class SisBulaMemory implements SisBula {
 	 */
 	public void sairDrogaria(){
 		gMedi.sairDaDrogaria();
+	}
+	public void cadastrarMedi(String nome) throws MedicamentoJaExisteException{
+		gMedi.cadastrarMedi(nome);
+	}
+	public void cadastraSintomaDeDoenca(String nomeDaDoenca, String sintoma) {
+		gDS.cadastraSintomaDeDoenca(nomeDaDoenca, sintoma);
+		
+	}
+	public void cadastraPossivelCausaDeDoenca(String doenca, String possivelCausa) {
+		gDS.cadastraPossivelCausaDeDoenca(doenca, possivelCausa);
+		
+	}
+	public List<Doenca> pesquisaDoencasCausadasPor(String fator) {
+		return gDS.pesquisaDoencasCausadasPor(fator);
+	}
+	public List<CausaDeDoenca> pesquisaPossiveisCausasDe(String doenca) {
+		return gDS.pesquisaPossiveisCausasDe(doenca);
 	}
 }

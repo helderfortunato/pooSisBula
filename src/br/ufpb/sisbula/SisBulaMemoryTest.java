@@ -1,8 +1,11 @@
 package br.ufpb.sisbula;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.io.File;
+
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.After;
@@ -11,56 +14,51 @@ import org.junit.Test;
 
 public class SisBulaMemoryTest {
 	SisBulaMemory sis;
-	
 	@Before
 	public void setUp() throws Exception {
-		File f = new File("drogaria.txt");
-		
-		if (f.exists()){
-			f.delete();
-		}
 		sis = new SisBulaMemory();
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
-		File f = new File("drogaria.txt");
-		if (f.exists()){
-			f.delete();
-		}
 	}
-	@Test
-	public void testaPersistencia() throws MedicamentoJaExisteException{
-		File f = new File("drogaria.txt");
-		assertFalse(f.exists());
-		sis.cadastraMedicamento(new Medicamento("Dipirona", Fabricante.EMS));
-		sis.sairDrogaria();
-		assertTrue(f.exists());
-	}
-	@Test
-	public void testaGerentDS(){
-		Doenca d1 = new Doenca("zika");
-		sis.cadastrarDoenca(d1);
-		List<Doenca> ld= sis.getDoencas();
-		assertTrue(ld!=null);
-		Sintoma s1= new Sintoma("dor de cabeÁa");
-		sis.cadastrarSintoma(s1);
-		List<Sintoma> ls = sis.getSintomas();
-		assertTrue(ls!=null);
-		System.out.println(sis.pesquisarDoenca("zika"));
-		System.out.println(sis.pesquisarSintoma("dor de cabeÁa"));
-	}
-	
+
 	@Test
 	public void testaCadastroDeMedicamentoOK() {
 		Medicamento m = new Medicamento("Novalgina");
 		try {
 			sis.cadastraMedicamento(m);
 		} catch (Exception e){
-			fail("LanÁou exceÁ„oo sem necessidade");
+			fail("Lan√ßou exce√ß√£o sem necessidade");
 		}	
 	}
+
 	
+	@Test
+	public void testaCadastroDeMedicamentoOK2() {
+		try {
+			Medicamento m1= new Medicamento("Novalgina");
+			sis.cadastraMedicamento(m1);
+			Medicamento m = sis.pesquisaMedicamento("Novalgina", Fabricante.GENERICO);
+			assertEquals("Novalgina", m.getNome());
+			assertEquals(Fabricante.GENERICO, m.getFabricante());
+		} catch (Exception e){
+			fail("Lan√ßou exce√ß√£o sem necessidade");
+		}	
+	}
+
+	@Test
+	public void testaPesquisaDeMedicamento(){
+		try {
+			Medicamento m1= new Medicamento("Novalgina");
+			sis.cadastraMedicamento(m1);
+			Medicamento m = sis.pesquisaMedicamento("Novalgina", Fabricante.GENERICO);
+			assertEquals("Novalgina", m.getNome());
+			assertEquals(Fabricante.GENERICO, m.getFabricante());
+		} catch (Exception e){
+			fail("Lan√ßou exce√ß√£o sem necessidade");
+		}
+	}
 	
 	@Test
 	public void testaCadastroDeMedicamentoDuasVezes() {
@@ -68,28 +66,29 @@ public class SisBulaMemoryTest {
 		try {
 			sis.cadastraMedicamento(m);
 		} catch (Exception e){
-			fail("LanÁou exceÁ„o sem necessidade");
+			fail("Lan√ßou exce√ß√£o sem necessidade");
 		}	
 		
 		try {
 			sis.cadastraMedicamento(new Medicamento("Novalgina"));
-			fail("Deveria ter lanÁado a exceÁ„o");
+			fail("Deveria ter lan√ßado a exce√ß√£o");
 		} catch (MedicamentoJaExisteException e) {
-			System.out.println("Muito bem, lanÁou a excecao direito");
+			System.out.println("Muito bem, lan√ßou a excecao direito");
 		}
 	}
 	
 	
 	@Test
 	public void testeDaProva(){
-		SisBulaMemory sisBula = new SisBulaMemory();
+		
+		SisBula sisBula = new SisBulaMemory();
 		List<Medicamento> lista = sisBula.pesquisaMedicamentosDoFabricante(Fabricante.MEDLEY);
 		assertEquals(0, lista.size());
 		Medicamento dip = new Medicamento("Dipirona", Fabricante.MEDLEY);
 		try {
 			sisBula.cadastraMedicamento(dip);
 		} catch (MedicamentoJaExisteException e){
-			fail("N„o deveria lanÁar exceÁ„o. Cadastro autorizado");
+			fail("N√£o deveria lan√ßar exce√ß√£o. Cadastro autorizado");
 		}
 		List<Medicamento> lista2 = sisBula.pesquisaMedicamentosDoFabricante(Fabricante.MEDLEY);
 		assertEquals(1, lista2.size());
@@ -97,10 +96,50 @@ public class SisBulaMemoryTest {
 		Medicamento dip2 = new Medicamento("Dipirona",Fabricante.MEDLEY);
 		try {
 			sisBula.cadastraMedicamento(dip2);
-			fail("Deveria ter lanÁado a exceÁ„o");
+			fail("Deveria ter lan√ßado a exce√ß√£o");
 		} catch (MedicamentoJaExisteException e2){
 			System.out.println("Exce√ß√£o esperada");
 		}
+		
+	}
+	
+//	@Test
+//	public void testaCadastroIndicacoesMedicamento() throws Exception {
+//		Medicamento mn = new Medicamento("Dipirona");
+//		sis.cadastrarDoenca("Zika");
+//		sis.cadastraMedicamento(mn);
+//		sis.cadastrarSintoma("Febre");
+//		sis.cadastrarMedicamentoParaDoenca("Dipirona","Zika");
+//		sis.cadastrarMedicamentoParaSintoma("Dipirona","Febre");
+//		List<Medicamento> remediosPraZika = sis.pesquisaMedicamentosPara("Zika");
+//		List<Medicamento> remediosPraFebre = sis.pesquisaMedicamentosPara("Febre");
+//		assertEquals(1, remediosPraZika.size());
+//		assertEquals(1, remediosPraFebre.size());
+//		Medicamento m1 = remediosPraZika.get(0);
+//		Medicamento m2 = remediosPraFebre.get(0);
+//		assertEquals("Dipirona", m1.getNome());
+//		assertEquals("Dipirona", m2.getNome());
+//		
+//		
+//		
+//	}
+	
+	@Test
+	public void testaCadastroDoenca(){
+		sis.cadastrarDoenca("Alzheimer");
+		sis.cadastraSintomaDeDoenca("Alzheimer","perda da mem√≥ria");
+		sis.cadastraSintomaDeDoenca("Alzheimer","dist√∫rbios de comportamento");
+		sis.cadastraPossivelCausaDeDoenca("Alzheimer","Sedentarismo");
+		sis.cadastraPossivelCausaDeDoenca("Alzheimer","Falta de exerc√≠cios mentais");
+		List <Doenca> doencas = sis.pesquisaDoencasCausadasPor("Sedentarismo");
+		assertTrue(doencas.size()==1);
+		assertEquals("Alzheimer", doencas.get(0).getNome());
+		List<CausaDeDoenca> possiveisCausas = sis.pesquisaPossiveisCausasDe("Alzheimer");
+		assertEquals(2, possiveisCausas.size());
+		assertTrue(!possiveisCausas.get(0).equals(possiveisCausas.get(1)));
+		assertTrue(possiveisCausas.get(0).toString().equals("Sedentarismo")||possiveisCausas.get(0).toString().equals("Falta de exerc√≠cios mentais"));
+		assertTrue(possiveisCausas.get(1).toString().equals("Sedentarismo")||possiveisCausas.get(1).toString().equals("Falta de exerc√≠cios mentais"));
+				
 		
 	}
 

@@ -12,7 +12,7 @@ public class Medicamento implements Serializable {
 	
 	public Medicamento(String nome){
 		this.nome = nome;
-		this.fabricante =  Fabricante.EMS;
+		this.fabricante =  Fabricante.GENERICO;
 		this.indicacoes = new ArrayList<IndicacaoMedicamento>();
 		this.interacoesMedicamentosas = new ArrayList<Medicamento>();
 	}
