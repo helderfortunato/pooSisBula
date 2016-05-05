@@ -155,30 +155,30 @@ public class SisBulaMemory implements SisBula {
 		return gDS.pesquisarSintoma(s);
 	}
 	/**
-	 * <<<<METODO INCOMPLETO>>>>
 	 * Cadastra medicamento para uma doenca, se essa doenca não existir sera criada, caso o medicamento já exista essa doença sera adicionada. 
 	 * @param m Nome do medicamento
 	 * @param doenca para ser cadastrada no medicamento
+	 * @throws MedicamentoInexistenteException 
 	 */
 	@Override
-	public void cadastrarMedicamentoParaDoenca(String m, String doenca){
+	public void cadastrarMedicamentoParaDoenca(String m, String doenca) throws MedicamentoInexistenteException{
 		if(gDS.pesquisaDS(doenca)==null){
 			gDS.cadastrarDoenca(doenca);	
 		}
-		gMedi.cadastrarMedicamentoParaDoenca(m, gDS.pesquisarDoenca(doenca));
+		gMedi.cadastrarMedicamentoPara(m, gDS.pesquisarDoenca(doenca));
 	}
 	/**
-	 * <<<<METODO INCOMPLETO>>>>
 	 * Cadastra medicamento para um sintoma, se esse sintoma não existir sera criada, caso o medicamento já exista esse sintoma sera adicionada.
 	 * @param m nome do medicamento
 	 * @param sintoma para ser cadastrada no medicamento
+	 * @throws MedicamentoInexistenteException 
 	 */
 	@Override
-	public void cadastrarMedicamentoParaSintoma(String m, String sintoma){
+	public void cadastrarMedicamentoParaSintoma(String m, String sintoma) throws MedicamentoInexistenteException{
 		if(gDS.pesquisaDS(sintoma)==null){
 			gDS.cadastrarSintoma(sintoma);	
 		}
-		gMedi.cadastrarMedicamentoParaSintoma(m, gDS.pesquisarSintoma(sintoma));
+		gMedi.cadastrarMedicamentoPara(m, gDS.pesquisarSintoma(sintoma));
 	}
 	/**
 	 * Sai do sistema, salvando todas a modificaçoes feitas na instância atual.

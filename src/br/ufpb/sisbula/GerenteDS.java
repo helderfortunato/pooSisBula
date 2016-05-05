@@ -12,7 +12,6 @@ public class GerenteDS {
 		this.sintomas = new LinkedList<Sintoma>();
 		this.causas= new LinkedList<CausaDeDoenca>();
 	}
-	
 	public boolean cadastrarDoenca(String d){
 		Doenca d1= new Doenca(d);
 		if(doencas.contains(d1)==false){

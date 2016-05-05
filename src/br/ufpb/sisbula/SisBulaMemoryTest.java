@@ -103,26 +103,26 @@ public class SisBulaMemoryTest {
 		
 	}
 	
-//	@Test
-//	public void testaCadastroIndicacoesMedicamento() throws Exception {
-//		Medicamento mn = new Medicamento("Dipirona");
-//		sis.cadastrarDoenca("Zika");
-//		sis.cadastraMedicamento(mn);
-//		sis.cadastrarSintoma("Febre");
-//		sis.cadastrarMedicamentoParaDoenca("Dipirona","Zika");
-//		sis.cadastrarMedicamentoParaSintoma("Dipirona","Febre");
-//		List<Medicamento> remediosPraZika = sis.pesquisaMedicamentosPara("Zika");
-//		List<Medicamento> remediosPraFebre = sis.pesquisaMedicamentosPara("Febre");
-//		assertEquals(1, remediosPraZika.size());
-//		assertEquals(1, remediosPraFebre.size());
-//		Medicamento m1 = remediosPraZika.get(0);
-//		Medicamento m2 = remediosPraFebre.get(0);
-//		assertEquals("Dipirona", m1.getNome());
-//		assertEquals("Dipirona", m2.getNome());
-//		
-//		
-//		
-//	}
+	@Test
+	public void testaCadastroIndicacoesMedicamento() throws Exception {
+		Medicamento mn = new Medicamento("Dipirona");
+		sis.cadastrarDoenca("Zika");
+		sis.cadastraMedicamento(mn);
+		sis.cadastrarSintoma("Febre");
+		sis.cadastrarMedicamentoParaDoenca("Dipirona","Zika");
+		sis.cadastrarMedicamentoParaSintoma("Dipirona","Febre");
+		List<Medicamento> remediosPraZika = sis.pesquisaMedicamentosPara("Zika");
+		List<Medicamento> remediosPraFebre = sis.pesquisaMedicamentosPara("Febre");
+		assertEquals(1, remediosPraZika.size());
+		assertEquals(1, remediosPraFebre.size());
+		Medicamento m1 = remediosPraZika.get(0);
+		Medicamento m2 = remediosPraFebre.get(0);
+		assertEquals("Dipirona", m1.getNome());
+		assertEquals("Dipirona", m2.getNome());
+		
+		
+		
+	}
 	
 	@Test
 	public void testaCadastroDoenca(){

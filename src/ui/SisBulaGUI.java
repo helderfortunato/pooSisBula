@@ -32,9 +32,10 @@ public class SisBulaGUI extends JFrame {
 	private SisBulaMemory sisM;
 	private Container painelDeConteudo;
 	private JMenuBar barraDeMenu;
-	private JMenu medicamentoMenu, creditosMenu, doencaMenu, sintomaMenu;
+	private JMenu medicamentoMenu, creditosMenu, doencaMenu, sintomaMenu,causasMenu;
 	private JMenuItem cadastraMed, pesquisaMed,removerMedi, creditos, listaMedi, pesquisaMedPDoenca,pesquisaMedPSintoma, pesquisaMediFabricante,
-	cadastrarDoenca, removerDoenca, pesquisarDoenca,todasDoencas, cadastrarSintoma, removerSintoma, pesquisarSintoma, todosSintomas;
+	cadastrarDoenca, removerDoenca, pesquisarDoenca,todasDoencas, cadastrarSintoma, removerSintoma, pesquisarSintoma, todosSintomas,cadastrarSintomaDoenca,
+	cadastrarPossivelCDoenca, pesquisaDoencaCausadaPor, pesquisaPossivelCausaDe;
 	private JButton salvarb;
 	
 	public SisBulaGUI(SisBula sis){
@@ -53,6 +54,7 @@ public class SisBulaGUI extends JFrame {
 		medicamentoMenu = new JMenu("Medicamento");
 		doencaMenu= new JMenu("Doença");
 		sintomaMenu= new JMenu("Sintoma");
+		causasMenu = new JMenu("Causas de doenças");
 		creditosMenu = new JMenu("Creditos");
 
 		salvarb= new JButton("Salvar");
@@ -60,6 +62,7 @@ public class SisBulaGUI extends JFrame {
 		barraDeMenu.add(medicamentoMenu);
 		barraDeMenu.add(doencaMenu);
 		barraDeMenu.add(sintomaMenu);
+		barraDeMenu.add(causasMenu);
 		barraDeMenu.add(creditosMenu);
 		barraDeMenu.add(salvarb);
 		
@@ -79,6 +82,10 @@ public class SisBulaGUI extends JFrame {
 		removerDoenca= new JMenuItem("Remover uma doença cadastrada");
 		pesquisarDoenca= new JMenuItem("Pesquisar uma doença");
 		todasDoencas = new JMenuItem("ver todas as doenças cadastradas");
+		cadastrarSintomaDoenca = new JMenuItem("Cadastrar um sintoma para uma doença");
+		cadastrarPossivelCDoenca = new JMenuItem("Cadastar uma possivel causa de Doença");
+		pesquisaDoencaCausadaPor = new JMenuItem("Pesquisar doencas por algum fator");
+		pesquisaPossivelCausaDe = new JMenuItem("Pesquisa as possiveis causas de uma doença");
 		
 		
 		medicamentoMenu.add(cadastraMed);
@@ -94,8 +101,12 @@ public class SisBulaGUI extends JFrame {
 		doencaMenu.add(removerDoenca);
 		sintomaMenu.add(cadastrarSintoma);
 		sintomaMenu.add(pesquisarSintoma);
+		sintomaMenu.add(cadastrarSintomaDoenca);
 		sintomaMenu.add(todosSintomas);
 		sintomaMenu.add(removerSintoma);
+		causasMenu.add(cadastrarPossivelCDoenca);
+		causasMenu.add(pesquisaDoencaCausadaPor);
+		causasMenu.add(pesquisaPossivelCausaDe);
 		creditos = new JMenuItem("Creditos");
 		creditosMenu.add(creditos);
 		setJMenuBar(barraDeMenu);
@@ -154,14 +165,14 @@ public class SisBulaGUI extends JFrame {
 		pesquisaMedPDoenca.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String nome = JOptionPane.showInputDialog("Para qual Doença você precisa do medicamento?");
-				List<Medicamento> m  = sisM.pesquisaMedicamentosPara(sisM.pesquisarDoenca(nome));
+				List<Medicamento> m  = sisM.pesquisaMedicamentosPara(nome);
 				JOptionPane.showMessageDialog(painelDeConteudo, "Medicamentos encontrado:"+m);
 			}
 		});
 		pesquisaMedPSintoma.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String nome= JOptionPane.showInputDialog("Para qual sintoma você precisa do medicamento?");
-				List<Medicamento> m = sisM.pesquisaMedicamentosPara(sisM.pesquisarSintoma(nome));
+				List<Medicamento> m = sisM.pesquisaMedicamentosPara(nome);
 				JOptionPane.showMessageDialog(painelDeConteudo, "Medicamentos encontrados:"+ m);
 				
 			}
@@ -176,13 +187,15 @@ public class SisBulaGUI extends JFrame {
 		});
 		cadastrarDoenca.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				sisM.cadastrarDoenca(leDadosDoenca());
+				String nome= JOptionPane.showInputDialog("Qual o nome da doenca?");
+				sisM.cadastrarDoenca(nome);
 				JOptionPane.showMessageDialog(painelDeConteudo, "Doenca cadastrada");
 			}
 		});
 		cadastrarSintoma.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				sisM.cadastrarSintoma(leDadosSintoma());
+				String nome= JOptionPane.showInputDialog("Qual o nome da doenca?");
+				sisM.cadastrarSintoma(nome);
 				JOptionPane.showMessageDialog(painelDeConteudo, "Sintoma cadastrado");
 			}
 		});
@@ -218,6 +231,32 @@ public class SisBulaGUI extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				sisM.removerSintoma(leDadosSintoma());
 				JOptionPane.showMessageDialog(painelDeConteudo, "Sintoma removido");
+			}
+		});
+		cadastrarSintomaDoenca.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String nomeDaDoenca = JOptionPane.showInputDialog("Para qual doenca deseja adicionar um sintoma?");
+				String nomeDoSintoma= JOptionPane.showInputDialog("Qual o sintoma?");
+				sisM.cadastraSintomaDeDoenca(nomeDaDoenca, nomeDoSintoma);
+			}
+		});
+		cadastrarPossivelCDoenca.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String nomeDaDoenca = JOptionPane.showInputDialog("qual o nome da doenca?");
+				String possivelCausa= JOptionPane.showInputDialog("Qual a possivel causa?");
+				sisM.cadastraPossivelCausaDeDoenca(nomeDaDoenca, possivelCausa);
+			}
+		});
+		pesquisaDoencaCausadaPor.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String fator = JOptionPane.showInputDialog("Qual o fator? ex: perda de memoria");
+				JOptionPane.showMessageDialog(painelDeConteudo, sisM.pesquisaDoencasCausadasPor(fator));
+			}
+		});
+		pesquisaPossivelCausaDe.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String doenca = JOptionPane.showInputDialog("Para qual doenca deseja saber as possiveis causas?");
+				JOptionPane.showMessageDialog(painelDeConteudo, sisM.pesquisaPossiveisCausasDe(doenca));
 			}
 		});
 	}

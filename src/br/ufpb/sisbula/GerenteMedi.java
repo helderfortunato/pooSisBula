@@ -71,6 +71,11 @@ public class GerenteMedi {
 		}
 		return lista;
 	}
+	public void cadastrarMedicamentoPara(String m,IndicacaoMedicamento sintomaOUdoenca) throws MedicamentoInexistenteException {
+		Medicamento mm = this.pesquisaMedicamento(m, Fabricante.GENERICO);
+		mm.adicionaIndicacao(sintomaOUdoenca);
+		
+	}
 	
 	public Map<String, Medicamento> getMedicamentos(){
 		return this.medicamentos;
@@ -86,12 +91,6 @@ public class GerenteMedi {
 			}
 		}
 	}
-	public void cadastrarMedicamentoParaDoenca(String m, Doenca doenca){
-		//TODO Não entendi bem essa parte.
-	}
-	public void cadastrarMedicamentoParaSintoma(String m, Sintoma sintoma){
-		//TODO Não entendi bem essa parte.
-	}
 	public void sairDaDrogaria(){
 		try{
 			this.gravador.gravarMedi(medicamentos);
@@ -99,5 +98,6 @@ public class GerenteMedi {
 			System.err.println(e.getMessage());
 		}
 	}
+
 	
 }

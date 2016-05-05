@@ -32,10 +32,10 @@ public interface SisBula {
 	public Medicamento pesquisaMedicamento(String nome, Fabricante fabricante) throws MedicamentoInexistenteException;
 
 	public abstract void cadastrarMedicamentoParaSintoma(String m,
-			String sintoma);
+			String sintoma) throws MedicamentoInexistenteException;
 
 	public abstract void cadastrarMedicamentoParaDoenca(String m,
-			String doenca);
+			String doenca) throws MedicamentoInexistenteException;
 
 	public abstract Sintoma pesquisarSintoma(String s);
 
